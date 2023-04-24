@@ -297,7 +297,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 210376842211731953, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_Name
-      value: Guitar
+      value: Trumpet
       objectReference: {fileID: 0}
     - target: {fileID: 3286643657170481522, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
@@ -306,7 +306,7 @@ PrefabInstance:
     - target: {fileID: 3595022960637860725, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 28a8f2d3f0cc74fa59efe38f9489afb6, type: 3}
+      objectReference: {fileID: 8300000, guid: bc912a72ca9a0437188bcce459e143f8, type: 3}
     - target: {fileID: 4213470644040676103, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.14
@@ -322,7 +322,7 @@ PrefabInstance:
     - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: _sourceClip
       value: 
-      objectReference: {fileID: 8300000, guid: 28a8f2d3f0cc74fa59efe38f9489afb6, type: 3}
+      objectReference: {fileID: 8300000, guid: bc912a72ca9a0437188bcce459e143f8, type: 3}
     - target: {fileID: 7863484541256764842, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.17
@@ -495,6 +495,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 210376842211731953, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: m_Name
+      value: Guitar
+      objectReference: {fileID: 0}
+    - target: {fileID: 3595022960637860725, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 28a8f2d3f0cc74fa59efe38f9489afb6, type: 3}
     - target: {fileID: 4213470644040676103, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.32
@@ -507,6 +515,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _sourceClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 28a8f2d3f0cc74fa59efe38f9489afb6, type: 3}
     - target: {fileID: 8187470394698766541, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.29
