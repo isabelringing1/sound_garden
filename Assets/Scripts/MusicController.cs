@@ -43,10 +43,24 @@ public class MusicController : MonoBehaviour
     
     private bool _isRecording;
     private bool _isPlaying;
+    private List<Note> _notes;
 
-    public void Initialize(FlowerRow[] instrumentRows)
+    private ArduinoBridge _bridge;
+    
+    private int[][] _chordMapping =
+    {
+        //       c  d  e  f  g  a  b  c
+        new [] { 1, 0, 1, 0, 1, 0, 0, 1 },
+        new [] { 1, 0, 1, 0, 0, 1, 0, 1 },
+        new [] { 1, 0, 0, 1, 0, 1, 0, 1 },
+        new [] { 0, 1, 0, 0, 1, 0, 1, 0 },
+    };
+
+    public void Initialize(FlowerRow[] instrumentRows, ArduinoBridge bridge, List<Note> notes)
     {
         _instrumentRows = instrumentRows;
+        _bridge = bridge;
+        _notes = notes;
         
         _metronomeSource.clip = _metronome;
         _beatTime = 60.0f / _BPM;
@@ -93,14 +107,12 @@ public class MusicController : MonoBehaviour
                 
                 if (_measureNumber % 16 == 1)
                 {
-                    Debug.LogWarning("Instrument 1");
                     SelectedInstrumentIndex = 0;
                     //start recording instrument 0, no instruments yet
                     StartRecordingPart(SelectedInstrumentIndex);
                 }
                 else if (_measureNumber % 16 == 5)
                 {
-                    Debug.LogWarning("Instrument 2");
                     SelectedInstrumentIndex++;
                     //start recording instrument 1, playing instrument 0
                     StartRecordingPart(SelectedInstrumentIndex);
@@ -208,6 +220,17 @@ public class MusicController : MonoBehaviour
         _chordSrc.Stop();
         _chordSrc.clip = _chords[index];
         _chordSrc.Play();
+        int[] chordMap = _chordMapping[index];
+        for (int i = 0; i < chordMap.Length; i++)
+        {
+            _instrumentRows[3].CloseFlower(_notes[i]); 
+            
+            if (chordMap[i] == 1)
+            {
+                _instrumentRows[3].OpenFlower(_notes[i]); 
+            }
+        }
+        _bridge.SendChordData(chordMap);
     }
     
     private void StopMetronome()

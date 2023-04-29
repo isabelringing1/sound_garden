@@ -33,6 +33,17 @@ public class FlowerRow : MonoBehaviour
 		_flowerDict[note].Close();
 	}
 
+	public void OpenFlower(Note note)
+	{
+		_flowerDict[note].Open(false);
+	}
+
+	public void CloseFlower(Note note)
+	{
+		_flowerDict[note].Close(false);
+		
+	}
+
 	public IEnumerator QueueNote(Note note, float delay, float duration)
 	{
 		yield return new WaitForSeconds(delay);

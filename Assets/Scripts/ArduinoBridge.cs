@@ -9,10 +9,21 @@ public class ArduinoBridge
 {
     SerialPort sp = new SerialPort("/dev/tty.usbmodem144101", 9600);
     private int[] _output;
+
+    private bool _serialAvailable = true;
     
     public void Initialize()
     {
-        sp.Open();
+        try
+        {
+            sp.Open();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Serial Not Available!");
+            _serialAvailable = false;
+            return;
+        }
         sp.ReadTimeout = 100; // In my case, 100 was a good amount to allow quite smooth transition. 
         _output = new int[8];
     }
@@ -34,8 +45,21 @@ public class ArduinoBridge
                 Debug.LogError(e);
             }
         }
-
         return _output;
+    }
+
+    public void SendChordData(int[] input)
+    {
+        if (!_serialAvailable)
+        {
+            return;
+        }
+        string s = String.Empty;
+        for (int i = 0; i < input.Length; i++)
+        {
+            s += input[i];
+        }
+        sp.WriteLine(s);
     }
     
 }

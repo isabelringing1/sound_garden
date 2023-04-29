@@ -2,16 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Flower : MonoBehaviour
 {
+	public bool IsOpen = false;
+	
 	[SerializeField] private SpriteRenderer _spriteRenderer;
 	[SerializeField] private Sprite _openSprite;
 	[SerializeField] private Sprite _semiSprite;
 	[SerializeField] private Sprite _closeSprite;
 
-	private bool isOpen = false;
 	private Note _note;
 	private Instrument _instrument;
 
@@ -25,23 +27,33 @@ public class Flower : MonoBehaviour
 		_instrument.Initialize();
 	}
 
-	public void Open()
+	public void Open(bool playNote = true)
 	{
-		isOpen = true;
+		IsOpen = true;
 		StartCoroutine(AnimateOpen());
-		_instrument.PlayNote(_note);
+		if (playNote)
+		{
+			_instrument.PlayNote(_note);
+		}
 	}
 	
-	public void Close()
+	public void Close(bool stopNote = true)
 	{
-		isOpen = false;
+		if (!IsOpen)
+		{
+			return;
+		}
+		IsOpen = false;
 		StartCoroutine(AnimateClose());
-		_instrument.StopNote(_note);
+		if (stopNote)
+		{
+			_instrument.StopNote(_note);
+		}
 	}
 
 	public void Play(float duration)
 	{
-		isOpen = true;
+		IsOpen = true;
 		StartCoroutine(AnimatePlay(duration));
 	}
 
