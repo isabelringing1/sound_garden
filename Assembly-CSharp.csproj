@@ -45,6 +45,7 @@
      <Compile Include="Assets/Scripts/FlowerRow.cs" />
      <Compile Include="Assets/Scripts/Flower.cs" />
      <Compile Include="Assets/Scripts/Instrument.cs" />
+     <Compile Include="Assets/Scripts/MusicController.cs" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2020.3.39f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>

@@ -7,8 +7,7 @@ public class FlowerRow : MonoBehaviour
 {
 	[SerializeField] private Flower[] _flowers;
 	[SerializeField] private Instrument _instrument;
-
-
+	
 	private Dictionary<Note, Flower> _flowerDict;
 	
 	// Start is called before the first frame update
@@ -34,8 +33,11 @@ public class FlowerRow : MonoBehaviour
 		_flowerDict[note].Close();
 	}
 
-	public void PlayNote(Note note, float duration)
+	public IEnumerator QueueNote(Note note, float delay, float duration)
 	{
-		
+		yield return new WaitForSeconds(delay);
+		StartNote(note);
+		yield return new WaitForSeconds(duration);
+		EndNote(note);
 	}
 }

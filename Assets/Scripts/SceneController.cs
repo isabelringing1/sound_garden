@@ -4,24 +4,26 @@ using UnityEngine;
 
 public enum Note
 {
-    C = 0,
+    C1 = 0,
     D = 2,
     E = 4,
     F = 5,
     G = 7,
     A = 9,
-    B = 11
+    B = 11,
+    C2 = 12,
 }
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] private FlowerRow _TopRow;
+    [SerializeField] private MusicController _MusicController;
     [SerializeField] private FlowerRow[] _InstrumentRows;
 
-    private FlowerRow _selectedFlowerRow;
+    private float[,] _timingsMatrix;
     
     void Start()
     {
-        _selectedFlowerRow = _TopRow;
+        _MusicController.Initialize(_InstrumentRows);
+        _timingsMatrix = new float[3, 13];
     }
 
     // Update is called once per frame
@@ -30,93 +32,116 @@ public class SceneController : MonoBehaviour
         // Toggle between Rows
         if (Input.GetKeyDown("a"))
         {
-            _selectedFlowerRow = _TopRow;
+            _MusicController.SelectedInstrumentIndex = 3;
         }
         if (Input.GetKeyDown("s"))
         {
-            _selectedFlowerRow = _InstrumentRows[0];
+            _MusicController.SelectedInstrumentIndex = 0;
         }
         if (Input.GetKeyDown("d"))
         {
-            _selectedFlowerRow = _InstrumentRows[1];
+            _MusicController.SelectedInstrumentIndex = 1;
         }
         if (Input.GetKeyDown("f"))
         {
-            _selectedFlowerRow = _InstrumentRows[2];
+            _MusicController.SelectedInstrumentIndex = 2;
         }
         
         // listen for keyboard input
         if (Input.GetKeyDown("1"))
         {
-            StartNote(Note.C, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.C1);
         }
         else if (Input.GetKeyUp("1"))
         {
-            EndNote(Note.C, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.C1);
         }
         
         if (Input.GetKeyDown("2"))
         {
-            StartNote(Note.D, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.D);
         }
         else if (Input.GetKeyUp("2"))
         {
-            EndNote(Note.D, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.D);
         }
         
         if (Input.GetKeyDown("3"))
         {
-            StartNote(Note.E, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.E);
         }
         else if (Input.GetKeyUp("3"))
         {
-            EndNote(Note.E, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.E);
         }
         
         if (Input.GetKeyDown("4"))
         {
-            StartNote(Note.F, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.F);
         }
         else if (Input.GetKeyUp("4"))
         {
-            EndNote(Note.F, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.F);
         }
         
         if (Input.GetKeyDown("5"))
         {
-            StartNote(Note.G, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.G);
         }
         else if (Input.GetKeyUp("5"))
         {
-            EndNote(Note.G, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.G);
         }
         
         if (Input.GetKeyDown("6"))
         {
-            StartNote(Note.A, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.A);
         }
         else if (Input.GetKeyUp("6"))
         {
-            EndNote(Note.A, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.A);
         }
         
         if (Input.GetKeyDown("7"))
         {
-            StartNote(Note.B, _selectedFlowerRow);
+            ProcessInputNoteStart(Note.B);
         }
         else if (Input.GetKeyUp("7"))
         {
-            EndNote(Note.B, _selectedFlowerRow);
+            ProcessInputNoteEnd(Note.B);
+        }
+        
+        if (Input.GetKeyDown("8"))
+        {
+            ProcessInputNoteStart(Note.C2);
+        }
+        else if (Input.GetKeyUp("8"))
+        {
+            ProcessInputNoteEnd(Note.C2);
         }
     }
 
-    void StartNote(Note note, FlowerRow flowerRow)
+    void ProcessInputNoteStart(Note note)
     {
-        flowerRow.StartNote(note);
+        _InstrumentRows[_MusicController.SelectedInstrumentIndex].StartNote(note);
+        if (_MusicController.SelectedInstrumentIndex < 3)
+        {
+            _timingsMatrix[_MusicController.SelectedInstrumentIndex, (int) note] = Time.time;
+        }
     }
-    
-    void EndNote(Note note, FlowerRow flowerRow)
+
+    void ProcessInputNoteEnd(Note note)
     {
-        flowerRow.EndNote(note);
+        _InstrumentRows[_MusicController.SelectedInstrumentIndex].EndNote(note);
+        if (_MusicController.SelectedInstrumentIndex == 3 || _timingsMatrix[_MusicController.SelectedInstrumentIndex, (int) note] == 0)
+        {
+            return;
+        }
+
+        float startTime = _timingsMatrix[_MusicController.SelectedInstrumentIndex, (int) note];
+        float duration = Time.time - startTime;
+        _MusicController.ProcessInputNote(_MusicController.SelectedInstrumentIndex, note, startTime, duration);
+
+        _timingsMatrix[_MusicController.SelectedInstrumentIndex, (int) note] = 0;
     }
 }
