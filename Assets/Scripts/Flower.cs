@@ -22,6 +22,7 @@ public class Flower : MonoBehaviour
 	{
 		_note = note;
 		_instrument = instrument;
+		_instrument.Initialize();
 	}
 
 	public void Open()
@@ -35,7 +36,7 @@ public class Flower : MonoBehaviour
 	{
 		isOpen = false;
 		StartCoroutine(AnimateClose());
-		_instrument.StopNote();
+		_instrument.StopNote(_note);
 	}
 
 	public void Play(float duration)

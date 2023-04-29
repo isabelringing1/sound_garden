@@ -100,6 +100,6 @@ void checkButtons() {
 void loop() {
 
     checkButtons();
-   
+    delay(20);
 
   }
