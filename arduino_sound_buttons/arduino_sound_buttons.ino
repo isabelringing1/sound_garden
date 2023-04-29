@@ -91,14 +91,31 @@ void checkButtons() {
           Serial.println(sensorValue);
         }
 
-      // turn on light if button is pushed
-      digitalWrite(buttonLEDPins[pinNumber], sensorValue);
+      // // turn on light if button is pushed
+      // digitalWrite(buttonLEDPins[pinNumber], sensorValue);
 
     }
 }
 
+ // check serial data for light info and update lights accordingly
+void updateLights() {
+    if (Serial.available() >= numButtons + 1) {
+      String lightInputString = Serial.readStringUntil('/n');
+      for(int pinNumber = 0; pinNumber < lightInputString.length(); pinNumber++) {
+        if(lightInputString.charAt(pinNumber) == '1') {
+          digitalWrite(buttonLEDPins[pinNumber], HIGH);
+        }
+        else {
+          digitalWrite(buttonLEDPins[pinNumber], LOW);
+        }
+      }
+  }
+}
+
+
 void loop() {
 
+    updateLights();
     checkButtons();
    
 
