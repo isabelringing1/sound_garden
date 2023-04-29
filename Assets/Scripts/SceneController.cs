@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,17 +19,47 @@ public class SceneController : MonoBehaviour
     [SerializeField] private MusicController _MusicController;
     [SerializeField] private FlowerRow[] _InstrumentRows;
 
+    private ArduinoBridge _arduinoBridge;
     private float[,] _timingsMatrix;
+    private bool[,] _flowerStates;
+    private List<Note> _notes;
     
     void Start()
     {
-        _MusicController.Initialize(_InstrumentRows);
+        _arduinoBridge = new ArduinoBridge();
+        _arduinoBridge.Initialize();
         _timingsMatrix = new float[3, 13];
+        _flowerStates = new bool[3, 8];
+        _notes = new List<Note>();
+        foreach (Note note in Enum.GetValues(typeof(Note)))
+        {
+            _notes.Add(note);
+        }
+        _MusicController.Initialize(_InstrumentRows, _arduinoBridge, _notes);
     }
 
     // Update is called once per frame
     void Update()
     {
+        int[] outputs = _arduinoBridge.Update();
+        if (outputs == null)
+        {
+            return;
+        }
+        for (int i = 0; i < outputs.Length; i++)
+        {
+            if (outputs[i] != 0 && !_flowerStates[0, i])
+            {
+                ProcessInputNoteStart(_notes[i]);
+                _flowerStates[0, i] = true;
+            }
+            else if (outputs[i] == 0 && _flowerStates[0, i])
+            {
+                ProcessInputNoteEnd(_notes[i]);
+                _flowerStates[0, i] = false;
+            }
+        }
+        
         // Toggle between Rows
         if (Input.GetKeyDown("a"))
         {

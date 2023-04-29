@@ -117,6 +117,6 @@ void loop() {
 
     updateLights();
     checkButtons();
-   
+    delay(20);
 
   }
