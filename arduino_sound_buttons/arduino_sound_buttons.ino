@@ -57,11 +57,6 @@ void setup() {
 
    
   Serial.begin(9600); 
-
-  while (Serial.available() <= 0) {
-    Serial.println("hello"); // send a starting message
-    delay(300);              // wait 1/3 second
-  }
 }
 
  // run through LED pins to check they're all connected
@@ -104,6 +99,7 @@ void checkButtons() {
 
  // check serial data for light info and update lights accordingly
 void updateLights() {
+    if (Serial.available() >= numButtons + 1) {
       String lightInputString = Serial.readStringUntil('/n');
       for(int pinNumber = 0; pinNumber < lightInputString.length(); pinNumber++) {
         if(lightInputString.charAt(pinNumber) == '1') {
@@ -112,16 +108,15 @@ void updateLights() {
         else {
           digitalWrite(buttonLEDPins[pinNumber], LOW);
         }
-     
+      }
   }
 }
 
 
 void loop() {
 
-    if (Serial.available() >= numButtons + 1) {
-      updateLights();
-      checkButtons();
-     }
+    updateLights();
+    checkButtons();
+    delay(20);
 
   }
