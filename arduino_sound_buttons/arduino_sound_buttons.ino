@@ -74,25 +74,27 @@ void checkLEDPins() {
 }
 
 
- // turn on LED pins for buttons that are connected
+ // check buttons and write values to serial
 void checkButtons() {
 
     for(int pinNumber = 0; pinNumber < numButtons; pinNumber++) {
         int sensorValue = digitalRead(buttonPins[pinNumber]);
-        Serial.print(pinNumber);
-        Serial.print(": ");
-        Serial.print(sensorValue);
-        Serial.print(", ");
 
-        if(sensorValue == LOW) {
-            digitalWrite(buttonLEDPins[pinNumber], LOW);
+        // if we are before the last button
+        if(pinNumber < numButtons - 1) {
+          Serial.print(sensorValue);
+          Serial.print(", ");
         }
+
+        // if we are at the last button
         else {
-            digitalWrite(buttonLEDPins[pinNumber], HIGH);
+          Serial.println(sensorValue);
         }
+
+      // turn on light if button is pushed
+      digitalWrite(buttonLEDPins[pinNumber], sensorValue);
 
     }
-    Serial.println();
 }
 
 void loop() {
