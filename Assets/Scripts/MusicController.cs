@@ -68,6 +68,7 @@ public class MusicController : MonoBehaviour
         
         _recordingDebug.SetActive(false);
         _playbackDebug.SetActive(false);
+        //_bridge.SendChordData(_chordMapping);
     }
 
     public void StartTime()
@@ -201,7 +202,7 @@ public class MusicController : MonoBehaviour
             FlowerRow row = _instrumentRows[i];
             for (int j = 0; j < record.Notes.Count; j++)
             {
-                Debug.LogWarning("Instrument " + i + " queuing " + record.Notes[j] + " at time " + record.Timings[j] + " for duration " + record.Durations[j]);
+                //Debug.LogWarning("Instrument " + i + " queuing " + record.Notes[j] + " at time " + record.Timings[j] + " for duration " + record.Durations[j]);
                 StartCoroutine(row.QueueNote(record.Notes[j], record.Timings[j], record.Durations[j]));
             }
         }
@@ -230,7 +231,7 @@ public class MusicController : MonoBehaviour
                 _instrumentRows[3].OpenFlower(_notes[i]); 
             }
         }
-        _bridge.SendChordData(chordMap);
+        _bridge.UpdateChordData(chordMap);
     }
     
     private void StopMetronome()
