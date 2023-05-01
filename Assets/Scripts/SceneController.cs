@@ -18,15 +18,14 @@ public class SceneController : MonoBehaviour
 {
     [SerializeField] private MusicController _MusicController;
     [SerializeField] private FlowerRow[] _InstrumentRows;
+    [SerializeField] private ArduinoBridge _arduinoBridge;
 
-    private ArduinoBridge _arduinoBridge;
     private float[,] _timingsMatrix;
     private bool[,] _flowerStates;
     private List<Note> _notes;
     
     void Start()
     {
-        _arduinoBridge = new ArduinoBridge();
         _arduinoBridge.Initialize();
         _timingsMatrix = new float[3, 13];
         _flowerStates = new bool[3, 8];
@@ -41,25 +40,8 @@ public class SceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int[] outputs = _arduinoBridge.Update();
-        if (outputs == null)
-        {
-            return;
-        }
-        for (int i = 0; i < outputs.Length; i++)
-        {
-            if (outputs[i] != 0 && !_flowerStates[0, i])
-            {
-                ProcessInputNoteStart(_notes[i]);
-                _flowerStates[0, i] = true;
-            }
-            else if (outputs[i] == 0 && _flowerStates[0, i])
-            {
-                ProcessInputNoteEnd(_notes[i]);
-                _flowerStates[0, i] = false;
-            }
-        }
-        
+        ProcessInputData(_arduinoBridge.ReadArduinoInput());
+       
         // Toggle between Rows
         if (Input.GetKeyDown("a"))
         {
@@ -149,6 +131,27 @@ public class SceneController : MonoBehaviour
         else if (Input.GetKeyUp("8"))
         {
             ProcessInputNoteEnd(Note.C2);
+        }
+    }
+
+    void ProcessInputData(int[] outputs)
+    {
+        if (outputs == null)
+        {
+            return;
+        }
+        for (int i = 0; i < outputs.Length; i++)
+        {
+            if (outputs[i] != 0 && !_flowerStates[0, i])
+            {
+                ProcessInputNoteStart(_notes[i]);
+                _flowerStates[0, i] = true;
+            }
+            else if (outputs[i] == 0 && _flowerStates[0, i])
+            {
+                ProcessInputNoteEnd(_notes[i]);
+                _flowerStates[0, i] = false;
+            }
         }
     }
 

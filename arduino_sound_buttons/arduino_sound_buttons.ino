@@ -29,7 +29,7 @@ const int buttonLEDPins[] = {button1LightPin, button2LightPin, button3LightPin, 
 const int buttonPins[] = {button1Pin, button2Pin, button3Pin, button4Pin,
                              button5Pin, button6Pin, button7Pin, button8Pin};
 
-
+String lastState = "0,0,0,0,0,0,0,0";
 
 void setup() {
 
@@ -43,8 +43,6 @@ void setup() {
   pinMode(button7Pin, INPUT);
   pinMode(button8Pin, INPUT);
 
-
-
    // configure the digital output:
   pinMode(button1LightPin, OUTPUT);
   pinMode(button2LightPin, OUTPUT);
@@ -55,7 +53,7 @@ void setup() {
   pinMode(button7LightPin, OUTPUT);
   pinMode(button8LightPin, OUTPUT);
 
-   
+  Serial.setTimeout(50);
   Serial.begin(9600); 
 }
 
@@ -76,25 +74,19 @@ void checkLEDPins() {
 
  // check buttons and write values to serial
 void checkButtons() {
-
+    String curr = "";
     for(int pinNumber = 0; pinNumber < numButtons; pinNumber++) {
         int sensorValue = digitalRead(buttonPins[pinNumber]);
-
+        curr += String(sensorValue);
         // if we are before the last button
         if(pinNumber < numButtons - 1) {
-          Serial.print(sensorValue);
-          Serial.print(", ");
+          curr += ",";
         }
-
-        // if we are at the last button
-        else {
-          Serial.println(sensorValue);
-        }
-
-      // // turn on light if button is pushed
-      // digitalWrite(buttonLEDPins[pinNumber], sensorValue);
-
     }
+    if (!curr.equals(lastState)){
+      Serial.println(curr);
+    }
+    lastState = curr;
 }
 
  // check serial data for light info and update lights accordingly
@@ -112,11 +104,9 @@ void updateLights() {
   }
 }
 
-
 void loop() {
-
-    updateLights();
-    checkButtons();
-    delay(20);
-
-  }
+  updateLights();
+  delay(50);
+  checkButtons();
+  delay(50);
+}

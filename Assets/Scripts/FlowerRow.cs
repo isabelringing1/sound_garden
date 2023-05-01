@@ -41,7 +41,6 @@ public class FlowerRow : MonoBehaviour
 	public void CloseFlower(Note note)
 	{
 		_flowerDict[note].Close(false);
-		
 	}
 
 	public IEnumerator QueueNote(Note note, float delay, float duration)
