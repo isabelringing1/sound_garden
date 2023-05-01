@@ -5,6 +5,8 @@ using UnityEngine;
 public class Instrument : MonoBehaviour
 {
     [SerializeField] private AudioClip _sourceClip;
+    [SerializeField] private AudioClip[] _octaveClips;
+    
     [SerializeField] private float _transpose = 0f;
     [SerializeField] private AudioSource[] _audioSources;
     
@@ -13,13 +15,23 @@ public class Instrument : MonoBehaviour
 
     public void Initialize()
     {
-        foreach (AudioSource src in _audioSources)
+        if (_sourceClip != null)
         {
-            src.clip = _sourceClip;
+            foreach (AudioSource src in _audioSources)
+            {
+                src.clip = _sourceClip;
+            }
         }
-
-        int i = 0;
+        else if (_octaveClips.Length > 0)
+        {
+            for (int j = 0; j < _octaveClips.Length; j++)
+            {
+                _audioSources[j].clip = _octaveClips[j];
+            }
+        }
+        
         _sourceDict = new Dictionary<Note, AudioSource>();
+        int i = 0;
         foreach (Note note in Enum.GetValues(typeof(Note)))
         {
             _sourceDict.Add(note, _audioSources[i]);
@@ -29,7 +41,10 @@ public class Instrument : MonoBehaviour
 
     public void PlayNote(Note note)
     {
-        _sourceDict[note].pitch =  Mathf.Pow(2, ((int) note + _transpose) / 12.0f);
+        if (_sourceClip != null)
+        {
+            _sourceDict[note].pitch =  Mathf.Pow(2, ((int) note + _transpose) / 12.0f);
+        }
         _sourceDict[note].Play();
     }
 
