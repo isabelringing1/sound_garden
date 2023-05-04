@@ -37,6 +37,9 @@ public class MusicController : MonoBehaviour
     private FlowerRow[] _instrumentRows;
 
     private float _beatTime;
+    private int _numInstruments;
+    private int _beatsPerMeasure;
+    private int _measuresPerLoop;
     private float _segmentStartTime;
     private int _beatNumber;
     private int _measureNumber;
@@ -62,8 +65,12 @@ public class MusicController : MonoBehaviour
         _bridge = bridge;
         _notes = notes;
         
+        
         _metronomeSource.clip = _metronome;
         _beatTime = 60.0f / _BPM;
+        _numInstruments = instrumentRows.Length - 1; // subtract one row for the chords
+        _beatsPerMeasure = 4;
+        _measuresPerLoop = 4;
         _records = new Record[3];
         
         _recordingDebug.SetActive(false);
@@ -89,51 +96,29 @@ public class MusicController : MonoBehaviour
         {
             _beatNumber++;
             _beatCt.text = (_beatNumber % 4 + 1).ToString();
-            if (_beatNumber % 4 == 1)
+            if (_beatNumber % _beatsPerMeasure == 1)
             {
                 _measureNumber++;
                 _measureCt.text = _measureNumber.ToString();
-                
-                /*if (_measureNumber % 32 == 1)
+            
+
+                // number of measures in the total round of one loop iteration for each instrument
+                int measuresPerRound = _measuresPerLoop * _numInstruments;
+
+                if (_measureNumber % measuresPerRound == 1)
                 {
-                    //TODO: Figure out what's going on in this part
-                    SelectedInstrumentIndex = 3;
-                    _isPlaying = false;
-                    _isRecording = false;
-                    _recordingDebug.SetActive(true);
-                    _playbackDebug.SetActive(false);
-                    SetIndicator(3);
-                }
-                else */
-                
-                if (_measureNumber % 16 == 1)
-                {
+                    Debug.LogWarning("Start of round ");
                     SelectedInstrumentIndex = 0;
-                    //start recording instrument 0, no instruments yet
-                    StartRecordingPart(SelectedInstrumentIndex);
-                }
-                else if (_measureNumber % 16 == 5)
-                {
-                    SelectedInstrumentIndex++;
-                    //start recording instrument 1, playing instrument 0
+                    //start recording instrument 0, play all other instruments
                     StartRecordingPart(SelectedInstrumentIndex);
                     StartPlayback(SelectedInstrumentIndex);
                 }
-                else if (_measureNumber % 16 == 9)
+                else if (_measureNumber % _measuresPerLoop == 1)
                 {
-                    SelectedInstrumentIndex++;
-                    //start recording instrument 2, playing two other instruments
+                    SelectedInstrumentIndex = (SelectedInstrumentIndex + 1) % _numInstruments;
+                    //start recording instrument 
                     StartRecordingPart(SelectedInstrumentIndex);
                     StartPlayback(SelectedInstrumentIndex);
-                }
-                // all other times - play what we've recorded
-                else if (_measureNumber % 4 == 1)
-                {
-                    
-                    SetIndicator(-1);
-                    StartPlayback(_records.Length);
-                    _recordingDebug.SetActive(false);
-                    _playbackDebug.SetActive(true);
                 }
 
                 if (_measureNumber % 4 == 1)
@@ -193,12 +178,17 @@ public class MusicController : MonoBehaviour
         _records[instrumentIndex].Durations.Add(duration);
     }
 
-    private void StartPlayback(int numInstruments)
+    private void StartPlayback(int recordingInstrumentNumber)
     {
         _isPlaying = true;
-        for (int i = 0; i < numInstruments; i++)
+        for (int i = 0; i < _numInstruments; i++)
         {
+            //Don't play currently recording instrument
+            if(i == recordingInstrumentNumber) {
+                continue;
+            }
             Record record = _records[i];
+            if(record == null) continue;
             FlowerRow row = _instrumentRows[i];
             for (int j = 0; j < record.Notes.Count; j++)
             {
