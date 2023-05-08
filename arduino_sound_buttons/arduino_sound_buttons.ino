@@ -1,4 +1,5 @@
 #include "cstdlib"
+#include "Adafruit_NeoPixel.h"
 
 using namespace std;
 
@@ -11,6 +12,9 @@ const int button5LightPin = 18;
 const int button6LightPin = 19;
 const int button7LightPin = 20;
 const int button8LightPin = 21;
+
+
+const int lightsPin = 10;
 
 // which pins are connected to buttons?
 const int button1Pin = 9;
@@ -30,6 +34,12 @@ const int buttonPins[] = {button1Pin, button2Pin, button3Pin, button4Pin,
                              button5Pin, button6Pin, button7Pin, button8Pin};
 
 String lastState = "0,0,0,0,0,0,0,0";
+
+Adafruit_NeoPixel pixels(numButtons, lightsPin, NEO_GRB + NEO_KHZ800);
+
+const int buttonReds[] = {255, 255, 255, 119, 0, 0, 188, 255};
+const int buttonGreens[] = {0, 154, 239, 255, 255, 60, 0, 0};
+const int buttonBlues[] = {0, 0, 0, 0, 252, 255, 255, 0};
 
 void setup() {
 
@@ -55,6 +65,7 @@ void setup() {
 
   Serial.setTimeout(50);
   Serial.begin(9600); 
+  pixels.begin();
 }
 
  // run through LED pins to check they're all connected
@@ -69,6 +80,15 @@ void checkLEDPins() {
     digitalWrite(buttonLEDPins[pinNumber], HIGH);
     delay(500);
   }
+}
+
+// turn on all the connected neopixels
+void testNeopixels() {
+  for(int i=0; i<numButtons; i++) { // For each pixel...
+    pixels.setPixelColor(i, pixels.Color(255, 255, 255));
+    pixels.show();  
+  }
+
 }
 
 
@@ -93,14 +113,13 @@ void checkButtons() {
 void updateLights() {
     if (Serial.available() >= numButtons + 1) {
       String lightInputString = Serial.readStringUntil('/n');
-      for(int pinNumber = 0; pinNumber < lightInputString.length(); pinNumber++) {
-        if(lightInputString.charAt(pinNumber) == '1') {
-          digitalWrite(buttonLEDPins[pinNumber], HIGH);
-        }
-        else {
-          digitalWrite(buttonLEDPins[pinNumber], LOW);
+      pixels.clear();
+      for(int lightIndex = 0; lightIndex < lightInputString.length(); lightIndex++) {
+        if(lightInputString.charAt(lightIndex) == '1') {
+          pixels.setPixelColor(lightIndex, pixels.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
         }
       }
+      pixels.show();
   }
 }
 
@@ -109,4 +128,5 @@ void loop() {
   delay(50);
   checkButtons();
   delay(50);
+
 }
