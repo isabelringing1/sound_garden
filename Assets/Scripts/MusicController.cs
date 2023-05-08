@@ -65,13 +65,12 @@ public class MusicController : MonoBehaviour
         _bridge = bridge;
         _notes = notes;
         
-        
         _metronomeSource.clip = _metronome;
         _beatTime = 60.0f / _BPM;
         _numInstruments = instrumentRows.Length - 1; // subtract one row for the chords
         _beatsPerMeasure = 4;
         _measuresPerLoop = 4;
-        _records = new Record[3];
+        _records = new Record[4];
         
         _recordingDebug.SetActive(false);
         _playbackDebug.SetActive(false);
@@ -100,14 +99,13 @@ public class MusicController : MonoBehaviour
             {
                 _measureNumber++;
                 _measureCt.text = _measureNumber.ToString();
-            
 
                 // number of measures in the total round of one loop iteration for each instrument
                 int measuresPerRound = _measuresPerLoop * _numInstruments;
 
                 if (_measureNumber % measuresPerRound == 1)
                 {
-                    Debug.LogWarning("Start of round ");
+                    Debug.LogWarning("Start of round");
                     SelectedInstrumentIndex = 0;
                     //start recording instrument 0, play all other instruments
                     StartRecordingPart(SelectedInstrumentIndex);
@@ -214,11 +212,11 @@ public class MusicController : MonoBehaviour
         int[] chordMap = _chordMapping[index];
         for (int i = 0; i < chordMap.Length; i++)
         {
-            _instrumentRows[3].CloseFlower(_notes[i]); 
+            _instrumentRows[4].CloseFlower(_notes[i]); 
             
             if (chordMap[i] == 1)
             {
-                _instrumentRows[3].OpenFlower(_notes[i]); 
+                _instrumentRows[4].OpenFlower(_notes[i]); 
             }
         }
         _bridge.UpdateChordData(chordMap);

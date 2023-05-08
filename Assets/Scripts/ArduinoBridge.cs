@@ -57,6 +57,11 @@ public class ArduinoBridge : MonoBehaviour
     
     public void UpdateChordData(int[] input)
     {
+        if (!_serialAvailable)
+        {
+            return;
+        }
+        
         string s = String.Empty;
         for (int i = 0; i < input.Length; i++)
         {
