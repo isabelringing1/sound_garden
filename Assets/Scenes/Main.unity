@@ -1931,7 +1931,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 210376842211731953, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_Name
-      value: Guitar
+      value: Voice 3
       objectReference: {fileID: 0}
     - target: {fileID: 2645120342703119918, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1992,7 +1992,43 @@ PrefabInstance:
     - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: _sourceClip
       value: 
-      objectReference: {fileID: 8300000, guid: 28a8f2d3f0cc74fa59efe38f9489afb6, type: 3}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: f62540fafaa394e03bf6dd0feae5607a, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: fd1ae69af5635453386e896e0463ad7c, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3c0f3a5641a2f4a97b5b5accaa5cc1f1, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: e0b9748a2c81742b6a3e6d735c8fc6cd, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: e4c46bdfd5656459cae2575f387fa7f5, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: c0e0e33f168f6455dbcd5c6c0cfedc1d, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: ba3e4108588654176a16784ef0b559c5, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: aa62e0a8798d848b791ef63a2f291bc2, type: 3}
     - target: {fileID: 7863484541256764842, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.95
@@ -2462,7 +2498,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 210376842211731953, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_Name
-      value: Guitar
+      value: Voice 4
       objectReference: {fileID: 0}
     - target: {fileID: 2645120342703119918, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2523,7 +2559,43 @@ PrefabInstance:
     - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: _sourceClip
       value: 
-      objectReference: {fileID: 8300000, guid: 28a8f2d3f0cc74fa59efe38f9489afb6, type: 3}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5818ccf100bab462bb4aceb43194cf43, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4df29427856d544fb87458f0c5864a8a, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: cbd5f7f25e8b6495fb2c4d112e0ee00f, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1889a940a93f41499abb1e838c89f52, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7826ef1d6b3c4415db5979ae46dc646f, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 32cb16b68392d4eacbd653dc8c024977, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8b12f0c960ae04aadb67044d80dcea97, type: 3}
+    - target: {fileID: 5892824942145052408, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
+      propertyPath: _octaveClips.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: a1ca68d55374e43a395e03b3b33ccfcb, type: 3}
     - target: {fileID: 7863484541256764842, guid: 69ada3cd78938424f80ac44f25928577, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.32
