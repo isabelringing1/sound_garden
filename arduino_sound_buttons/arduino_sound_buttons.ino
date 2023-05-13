@@ -66,6 +66,8 @@ void setup() {
   Serial.setTimeout(50);
   Serial.begin(9600); 
   pixels.begin();
+
+  testNeopixels();
 }
 
  // run through LED pins to check they're all connected
@@ -85,9 +87,36 @@ void checkLEDPins() {
 // turn on all the connected neopixels
 void testNeopixels() {
   for(int i=0; i<numButtons; i++) { // For each pixel...
-    pixels.setPixelColor(i, pixels.Color(255, 255, 255));
+    pixels.setPixelColor(i, pixels.Color(255, 0, 0));
     pixels.show();  
   }
+
+  delay(1000);
+  for(int i=0; i<numButtons; i++) { // For each pixel...
+    pixels.setPixelColor(i, pixels.Color(0, 255, 0));
+    pixels.show();  
+  }
+    delay(1000);
+
+    for(int i=0; i<numButtons; i++) { // For each pixel...
+    pixels.setPixelColor(i, pixels.Color(0, 0, 255));
+    pixels.show();  
+  }
+
+      delay(1000);
+
+      for(int i=0; i<numButtons; i++) { // For each pixel...
+    pixels.setPixelColor(i, pixels.Color(255, 255, 255));
+    pixels.show();  
+
+    delay(1000);
+
+    pixels.clear()
+    pixels.show();  
+
+
+  }
+
 
 }
 
@@ -115,8 +144,9 @@ void updateLights() {
       String lightInputString = Serial.readStringUntil('/n');
       pixels.clear();
       for(int lightIndex = 0; lightIndex < lightInputString.length(); lightIndex++) {
+        int sensorValue = digitalRead(buttonPins[lightIndex]);
         if(lightInputString.charAt(lightIndex) == '1') {
-          pixels.setPixelColor(lightIndex, pixels.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
+            pixels.setPixelColor(lightIndex, pixels.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
         }
       }
       pixels.show();
