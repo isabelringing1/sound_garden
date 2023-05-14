@@ -219,7 +219,7 @@ public class MusicController : MonoBehaviour
                 _instrumentRows[4].OpenFlower(_notes[i]); 
             }
         }
-        _bridge.UpdateChordData(chordMap);
+        _bridge.UpdateChordData(chordMap, SelectedInstrumentIndex + 1);
     }
     
     private void StopMetronome()

@@ -7,7 +7,7 @@ using UnityEngine.tvOS;
 
 public class ArduinoBridge : MonoBehaviour
 {
-    SerialPort sp = new SerialPort("/dev/tty.usbmodem14401", 9600);
+    SerialPort sp = new SerialPort("/dev/cu.usbmodem144101", 9600);
     private int[] _output;
     private string _savedChord;
 
@@ -55,7 +55,7 @@ public class ArduinoBridge : MonoBehaviour
         }
     }
     
-    public void UpdateChordData(int[] input)
+    public void UpdateChordData(int[] input, int activeRow)
     {
         if (!_serialAvailable)
         {
@@ -63,6 +63,7 @@ public class ArduinoBridge : MonoBehaviour
         }
         
         string s = String.Empty;
+        s += activeRow;
         for (int i = 0; i < input.Length; i++)
         {
             s += input[i];
