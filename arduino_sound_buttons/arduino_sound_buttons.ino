@@ -12,10 +12,10 @@ const int lightsPin4 = 35;
 
 const int numButtons = 8;
 
-const int buttonPins1[] = {6,7,8,9,10,11,12,13};
-const int buttonPins2[] = {16,15,14,37,36,2,3,4};
-const int buttonPins3[] = {25,24,23,22,21,20,19,18};
-const int buttonPins4[] = {34,33,32,31,30,29,28,27};
+const int buttonPins1[] = {13,12,11,10,9,8,7,6}; //{6,7,8,9,10,11,12,13};
+const int buttonPins2[] = {4,3,2,36,37,14,15,16}; //{16,15,14,37,36,2,3,4};
+const int buttonPins3[] = {18,19,20,21,22,23,24,25}; //{25,24,23,22,21,20,19,18};
+const int buttonPins4[] = {34,33,32,31,30,29,28,27}; //{27,28,29,30,31,32,33,34};
 
 String lastState = "0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0";
 
