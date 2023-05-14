@@ -18,6 +18,7 @@ const int buttonPins3[] = {18,19,20,21,22,23,24,25}; //{25,24,23,22,21,20,19,18}
 const int buttonPins4[] = {34,33,32,31,30,29,28,27}; //{27,28,29,30,31,32,33,34};
 
 String lastState = "0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0";
+String lastLightInputString = "100000000";
 
 Adafruit_NeoPixel pixels1(numButtons, lightsPin1, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel pixels2(numButtons, lightsPin2, NEO_GRB + NEO_KHZ800);
@@ -27,6 +28,8 @@ Adafruit_NeoPixel pixels4(numButtons, lightsPin4, NEO_GRB + NEO_KHZ800);
 const int buttonReds[] = {255, 255, 255, 119, 0, 0, 188, 255};
 const int buttonGreens[] = {0, 154, 239, 255, 255, 60, 0, 0};
 const int buttonBlues[] = {0, 0, 0, 0, 252, 255, 255, 0};
+
+const float chordFactor = 0.6;
 
 void setup() {
 
@@ -126,8 +129,8 @@ void testNeopixels() {
 }
 
 
- // check buttons and write values to serial
-void checkButtons() {
+ // check buttons and write values to serial; returns true if they've changed
+bool checkButtons() {
     String curr = "";
     for(int pinNumber = 0; pinNumber < numButtons; pinNumber++) {
         int sensorValue = digitalRead(buttonPins1[pinNumber]);
@@ -173,46 +176,110 @@ void checkButtons() {
 
     if (!curr.equals(lastState)){
       Serial.println(curr);
+      return true;
     }
     lastState = curr;
+    return false;
 }
 
  // check serial data for light info and update lights accordingly
-void updateLights() {
+void updateLights(bool buttonsChanged) {
+
+    bool chordsChanged = false;
     if (Serial.available() >= numButtons + 2) {
-      String lightInputString = Serial.readStringUntil('/n');
+      lastLightInputString = Serial.readStringUntil('/n');
+      chordsChanged = true;
+    }
 
-      char targetController = lightInputString.charAt(0);
+    if(!(buttonsChanged || chordsChanged)) {
+      return;
+    }
 
-      pixels1.clear();
-      pixels2.clear();
-      pixels3.clear();
-      pixels4.clear();
-      for(int lightIndex = 0; lightIndex < lightInputString.length() - 1; lightIndex++) {
-        if(lightInputString.charAt(lightIndex + 1) == '1') {
-          if(targetController == '1') pixels1.setPixelColor(lightIndex, pixels1.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
-          if(targetController == '2') pixels2.setPixelColor(lightIndex, pixels2.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
-          if(targetController == '3') pixels3.setPixelColor(lightIndex, pixels3.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
-          if(targetController == '4') pixels4.setPixelColor(lightIndex, pixels4.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
-        }
-        else {
-          if(targetController == '1') pixels1.setPixelColor(lightIndex, pixels1.Color(20, 20, 20));
-          if(targetController == '2') pixels2.setPixelColor(lightIndex, pixels2.Color(20, 20, 20));
-          if(targetController == '3') pixels3.setPixelColor(lightIndex, pixels3.Color(20, 20, 20));
-          if(targetController == '4') pixels4.setPixelColor(lightIndex, pixels4.Color(20, 20, 20));
-        }
+    char targetController = lastLightInputString.charAt(0);
+
+  
+    pixels1.clear();
+    pixels2.clear();
+    pixels3.clear();
+    pixels4.clear();
+    for(int lightIndex = 0; lightIndex < lastLightInputString.length() - 1; lightIndex++) {
+      bool lightInChord = lastLightInputString.charAt(lightIndex + 1) == '1';
+
+
+      if(targetController == '1') {
+        bool buttonPressed = digitalRead(buttonPins1[lightIndex]) == 1;
+        if(lightInChord) pixels1.setPixelColor(lightIndex, pixels1.Color(buttonReds[lightIndex] * chordFactor, 
+                                                                         buttonGreens[lightIndex] * chordFactor, 
+                                                                         buttonBlues[lightIndex] * chordFactor));
+        else pixels1.setPixelColor(lightIndex, pixels1.Color(5, 5, 5));
+
+        if (buttonPressed) pixels1.setPixelColor(lightIndex, pixels1.Color(buttonReds[lightIndex], 
+                                                                           buttonGreens[lightIndex], 
+                                                                           buttonBlues[lightIndex]));
       }
-      pixels1.show();
-      pixels2.show();
-      pixels3.show();
-      pixels4.show();
-  }
+
+      if(targetController == '2') {
+        bool buttonPressed = digitalRead(buttonPins2[lightIndex]) == 1;
+        if(lightInChord) pixels2.setPixelColor(lightIndex, pixels2.Color(buttonReds[lightIndex] * chordFactor, 
+                                                                         buttonGreens[lightIndex] * chordFactor, 
+                                                                         buttonBlues[lightIndex] * chordFactor));
+        else pixels2.setPixelColor(lightIndex, pixels2.Color(5, 5, 5));
+
+        if (buttonPressed) pixels2.setPixelColor(lightIndex, pixels2.Color(buttonReds[lightIndex], 
+                                                                           buttonGreens[lightIndex], 
+                                                                           buttonBlues[lightIndex]));
+      }
+
+      if(targetController == '3') {
+        bool buttonPressed = digitalRead(buttonPins3[lightIndex]) == 1;
+        if(lightInChord) pixels3.setPixelColor(lightIndex, pixels3.Color(buttonReds[lightIndex] * chordFactor, 
+                                                                         buttonGreens[lightIndex] * chordFactor, 
+                                                                         buttonBlues[lightIndex] * chordFactor));
+        else pixels3.setPixelColor(lightIndex, pixels3.Color(5, 5, 5));
+
+        if (buttonPressed) pixels3.setPixelColor(lightIndex, pixels3.Color(buttonReds[lightIndex], 
+                                                                           buttonGreens[lightIndex], 
+                                                                           buttonBlues[lightIndex]));
+      }
+
+        if(targetController == '4') {
+        bool buttonPressed = digitalRead(buttonPins4[lightIndex]) == 1;
+        if(lightInChord) pixels4.setPixelColor(lightIndex, pixels4.Color(buttonReds[lightIndex] * chordFactor, 
+                                                                         buttonGreens[lightIndex] * chordFactor, 
+                                                                         buttonBlues[lightIndex] * chordFactor));
+        else pixels4.setPixelColor(lightIndex, pixels4.Color(5, 5, 5));
+
+        if (buttonPressed) pixels4.setPixelColor(lightIndex, pixels4.Color(buttonReds[lightIndex], 
+                                                                           buttonGreens[lightIndex], 
+                                                                           buttonBlues[lightIndex]));
+      }
+
+
+      // if(lightInputString.charAt(lightIndex + 1) == '1') {
+      //   if(targetController == '1') pixels1.setPixelColor(lightIndex, pixels1.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
+      //   if(targetController == '2') pixels2.setPixelColor(lightIndex, pixels2.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
+      //   if(targetController == '3') pixels3.setPixelColor(lightIndex, pixels3.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
+      //   if(targetController == '4') pixels4.setPixelColor(lightIndex, pixels4.Color(buttonReds[lightIndex], buttonGreens[lightIndex], buttonBlues[lightIndex]));
+      // }
+      // else {
+      //   if(targetController == '1') pixels1.setPixelColor(lightIndex, pixels1.Color(20, 20, 20));
+      //   if(targetController == '2') pixels2.setPixelColor(lightIndex, pixels2.Color(20, 20, 20));
+      //   if(targetController == '3') pixels3.setPixelColor(lightIndex, pixels3.Color(20, 20, 20));
+      //   if(targetController == '4') pixels4.setPixelColor(lightIndex, pixels4.Color(20, 20, 20));
+      // }
+    // }
+    
+    pixels1.show();
+    pixels2.show();
+    pixels3.show();
+    pixels4.show();
+}
 }
 
 void loop() {
-  updateLights();
+  bool buttonsChanged =checkButtons();
   delay(50);
-  checkButtons();
+  updateLights(buttonsChanged);
   delay(50);
 
 }
