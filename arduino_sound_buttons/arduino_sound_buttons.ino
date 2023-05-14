@@ -13,9 +13,9 @@ const int lightsPin4 = 35;
 const int numButtons = 8;
 
 const int buttonPins1[] = {6,7,8,9,10,11,12,13};
-const int buttonPins2[] = {16,15,14,0,1,2,3,4};
-const int buttonPins3[] = {25,24,23,22,21,20,19,16};
-const int buttonPins4[] = {34,33,31,31,30,29,28,27};
+const int buttonPins2[] = {16,15,14,37,36,2,3,4};
+const int buttonPins3[] = {25,24,23,22,21,20,19,18};
+const int buttonPins4[] = {34,33,32,31,30,29,28,27};
 
 String lastState = "0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0:0,0,0,0,0,0,0,0";
 
@@ -212,7 +212,7 @@ void updateLights() {
 void loop() {
   updateLights();
   delay(50);
-  // checkButtons();
+  checkButtons();
   delay(50);
 
 }
