@@ -8,7 +8,7 @@ using UnityEngine.tvOS;
 public class ArduinoBridge : MonoBehaviour
 {
     SerialPort sp = new SerialPort("/dev/cu.usbmodem144101", 9600);
-    private int[] _output;
+    private int[,] _output;
     private string _savedChord;
 
     private bool _serialAvailable = true;
@@ -27,10 +27,10 @@ public class ArduinoBridge : MonoBehaviour
         }
         sp.ReadTimeout = 100; // In my case, 100 was a good amount to allow quite smooth transition. 
         sp.WriteTimeout = 100;
-        _output = new int[8];
+        _output = new int[4,8];
     }
     
-    public int[] ReadArduinoInput()
+    public int[,] ReadArduinoInput()
     {
         if (!_serialAvailable)
         {
@@ -48,12 +48,21 @@ public class ArduinoBridge : MonoBehaviour
 
     public void ReadInputData(string input)
     {
-        string[] splitInput = input.Split(",");
-        for (int i = 0; i < splitInput.Length; i++)
-        {
-            _output[i] = Int32.Parse(splitInput[i]);
+        string[] splitButtonInput = input.Split(":");
+        
+        
+
+        for(int buttonIndex = 0; buttonIndex < splitButtonInput.Length; buttonIndex++) {
+            string buttonInput = splitButtonInput[buttonIndex];
+            string[] splitInput = buttonInput.Split(",");
+            for (int i = 0; i < splitInput.Length; i++)
+                {
+                    _output[buttonIndex, i] = Int32.Parse(splitInput[i]);
+                }
         }
+        
     }
+
     
     public void UpdateChordData(int[] input, int activeRow)
     {

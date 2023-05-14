@@ -138,20 +138,22 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    void ProcessInputData(int[] outputs)
+    void ProcessInputData(int[,] outputs)
     {
         if (outputs == null)
         {
             return;
         }
-        for (int i = 0; i < outputs.Length; i++)
+        int buttonIndex = _MusicController.SelectedInstrumentIndex;
+     
+        for (int i = 0; i < outputs.GetLength(1); i++)
         {
-            if (outputs[i] != 0 && !_flowerStates[0, i])
+            if (outputs[buttonIndex, i] != 0 && !_flowerStates[0, i])
             {
                 ProcessInputNoteStart(_notes[i]);
                 _flowerStates[0, i] = true;
             }
-            else if (outputs[i] == 0 && _flowerStates[0, i])
+            else if (outputs[buttonIndex, i] == 0 && _flowerStates[0, i])
             {
                 ProcessInputNoteEnd(_notes[i]);
                 _flowerStates[0, i] = false;
