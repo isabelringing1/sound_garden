@@ -165,7 +165,7 @@ public class MusicController : MonoBehaviour
 
     public void ProcessInputNote(int instrumentIndex, Note note, float startTime, float duration)
     {
-        if (!_isRecording || instrumentIndex != SelectedInstrumentIndex || SelectedInstrumentIndex > 2)
+        if (!_isRecording || instrumentIndex != SelectedInstrumentIndex || SelectedInstrumentIndex > _numInstruments - 1)
         {
             return;
         }
